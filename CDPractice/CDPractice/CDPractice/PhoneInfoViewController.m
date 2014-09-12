@@ -15,7 +15,8 @@
 
 @implementation PhoneInfoViewController
 
-@synthesize NameField = _NameField;
+@synthesize FirstNameField = _FirstNameField;
+@synthesize LastNameField = _LastNameField;
 @synthesize NumberFiled = _NumberFiled;
 @synthesize EmailFiled = _EmailFiled;
 @synthesize BirthdayFiled = _BirthdayFiled;
@@ -37,7 +38,7 @@
 {
     [super viewDidLoad];
     [self setTextValue];
-    [self setTextFieldDelegate];
+    [self setSubTextFieldDelegate];
     [self InitDataPicker];
     
 }
@@ -46,6 +47,12 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+//Hidden status bar (iOS 7)
+-(BOOL)prefersStatusBarHidden
+{
+    return YES;
 }
 
 #pragma mark - set Value
@@ -62,18 +69,33 @@
 
 -(void)setTextValue
 {
-    _NameField.text = self.UserPhoneInfo.name;
+    NSArray *NameArr = [self.UserPhoneInfo.name componentsSeparatedByString:@" "];
+    
+    _FirstNameField.text = [NameArr objectAtIndex:0];
+    _LastNameField.text = [NameArr objectAtIndex:1];
     _NumberFiled.text = self.UserPhoneInfo.number;
     _EmailFiled.text = self.UserPhoneInfo.email;
     _BirthdayFiled.text = [[ModelController shareModelController] ChangeBirthdayDateToString:self.UserPhoneInfo.birthday];
 }
 
--(void)setTextFieldDelegate
+-(void)setSubTextFieldDelegate
 {
-    _NameField.delegate = self;
+    _FirstNameField.delegate = self;
+    _LastNameField.delegate = self;
     _NumberFiled.delegate = self;
     _EmailFiled.delegate = self;
     _BirthdayFiled.delegate = self;
+}
+
+-(void)setSubTextFieldEnabled:(BOOL)isEnabled
+{
+    for (id subview in [self.view subviews]){
+        
+        if ([subview isKindOfClass:[UITextField class]]) {
+            UITextField *subTextField = (UITextField *)subview;
+            subTextField.enabled = isEnabled;
+        }
+    }
 }
 
 #pragma mark - DatePicker method
@@ -86,6 +108,9 @@
     _DatePicker.timeZone = [NSTimeZone timeZoneWithName:@"GMT"];
     _DatePicker.datePickerMode = UIDatePickerModeDate;
     [_DatePicker addTarget:self action:@selector(ChangeDateToTextField) forControlEvents:UIControlEventValueChanged];
+    
+    NSDate *Today = [NSDate date];
+    _DatePicker.maximumDate = Today;
     
     //Keyborad change DatePicker
     _BirthdayFiled.inputView = _DatePicker;
@@ -111,10 +136,7 @@
         
         [_EditButton setTitle:@"Done" forState:UIControlStateNormal];
         
-        _NameField.enabled = YES;
-        _NumberFiled.enabled = YES;
-        _EmailFiled.enabled = YES;
-        _BirthdayFiled.enabled = YES;
+        [self setSubTextFieldEnabled:YES];
         
         _BackButton.enabled = NO;
         
@@ -124,10 +146,7 @@
         
         [_EditButton setTitle:@"Edit" forState:UIControlStateNormal];
         
-        _NameField.enabled = NO;
-        _NumberFiled.enabled = NO;
-        _EmailFiled.enabled = NO;
-        _BirthdayFiled.enabled = NO;
+        [self setSubTextFieldEnabled:NO];
         
         _BackButton.enabled = YES;
         
@@ -139,12 +158,14 @@
 {
     BOOL isSuccess = NO;
     
-    self.UserPhoneInfo.name = _NameField.text;
+    NSString *UserName = [NSString stringWithFormat:@"%@ %@",_FirstNameField.text,_LastNameField.text];
+    
+    self.UserPhoneInfo.name = UserName;
     self.UserPhoneInfo.number = _NumberFiled.text;
     self.UserPhoneInfo.email = _EmailFiled.text;
     self.UserPhoneInfo.birthday = [[ModelController shareModelController] ChangeBirthdayStringToDate:_BirthdayFiled.text];
     
-    isSuccess = [[ModelController shareModelController]UpdateObject];
+    isSuccess = [[ModelController shareModelController] UpdateObject];
     
     if (!isSuccess){
         self.FaultMessage.text = @"CoreData saves fault.";
@@ -169,17 +190,35 @@
             [FormatErrorView show];
             
             _EmailFiled.textColor = [UIColor redColor];
+        }else{
+            _EmailFiled.textColor = [UIColor blackColor];
         }
     }
     return YES;
+}
+
+-(void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    if (textField == _BirthdayFiled) {
+        [self MoveUpTheView];
+    }
+}
+
+-(void)textFieldDidEndEditing:(UITextField *)textField
+{
+    if (textField == _BirthdayFiled) {
+        [self MoveDownTheView];
+    }
 }
 
 #pragma mark - touchEvent
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    
+    [_FirstNameField resignFirstResponder];
+    [_LastNameField resignFirstResponder];
     [_NumberFiled resignFirstResponder];
-    [_NameField resignFirstResponder];
     [_EmailFiled resignFirstResponder];
     [_BirthdayFiled resignFirstResponder];
     
@@ -194,13 +233,41 @@
         return YES;
     }
     
-    BOOL stricterFilter = YES;
     NSString *stricterfilterString = @"[A-Z0-9a-z\\._%+-]+@([A-Za-z0-9-]+\\.)+[A-Za-z]{2,4}";
-    NSString *laxString = @".+@([A-Za-z0-9-]+\\.+[A-Za-z]{2}[A-Za-z]*";
-    NSString *emailRegex = stricterFilter ? stricterfilterString : laxString ;
+    NSString *emailRegex = stricterfilterString;
     NSPredicate *emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",emailRegex];
     
     return [emailTest evaluateWithObject:checkString];
+}
+
+#pragma mark AnimationMoveView
+
+-(void)MoveUpTheView
+{
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:0.3];
+    [UIView setAnimationDelegate:self];
+    
+    [UIView setAnimationBeginsFromCurrentState:YES];
+    
+    self.view.frame = CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y - 30,
+                                 self.view.frame.size.width, self.view.frame.size.height);
+    
+    [UIView commitAnimations];
+}
+
+-(void)MoveDownTheView
+{
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:0.3];
+    [UIView setAnimationDelegate:self];
+    
+    [UIView setAnimationBeginsFromCurrentState:YES];
+    
+    self.view.frame = CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y + 30 ,
+                                 self.view.frame.size.width, self.view.frame.size.height);
+    
+    [UIView commitAnimations];
 }
 
 

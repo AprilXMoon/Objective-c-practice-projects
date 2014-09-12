@@ -17,7 +17,8 @@
 
 @property (retain,nonatomic)Phone *UserPhoneInfo;
 
-@property (retain,nonatomic)IBOutlet UITextField *NameField;
+@property (retain,nonatomic)IBOutlet UITextField *FirstNameField;
+@property (retain,nonatomic)IBOutlet UITextField *LastNameField;
 @property (retain,nonatomic)IBOutlet UITextField *NumberFiled;
 @property (retain,nonatomic)IBOutlet UITextField *EmailFiled;
 @property (retain,nonatomic)IBOutlet UITextField *BirthdayFiled;

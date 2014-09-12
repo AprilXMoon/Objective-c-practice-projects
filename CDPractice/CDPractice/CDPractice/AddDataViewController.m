@@ -14,7 +14,8 @@
 
 @implementation AddDataViewController
 
-@synthesize NameField = _NameField;
+@synthesize FirstNameField = _FirstNameField;
+@synthesize LastNameField = _LastNameField;
 @synthesize NumberFiled = _NumberFiled;
 @synthesize EmailFiled = _EmailFiled;
 @synthesize BirthdayFiled = _BirthdayFiled;
@@ -33,7 +34,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self setTextFieldDelegate];
+    [self setSubTextFieldDelegate];
     [self InitDataPicker];
     
     // Do any additional setup after loading the view from its nib.
@@ -45,11 +46,17 @@
     // Dispose of any resources that can be recreated.
 }
 
+//Hidden status bar (iOS 7)
+-(BOOL)prefersStatusBarHidden
+{
+    return YES;
+}
 
 #pragma mark - Setting Method
--(void)setTextFieldDelegate
+-(void)setSubTextFieldDelegate
 {
-    _NameField.delegate = self;
+    _FirstNameField.delegate = self;
+    _LastNameField.delegate = self;
     _NumberFiled.delegate = self;
     _EmailFiled.delegate = self;
     _BirthdayFiled.delegate = self;
@@ -63,7 +70,9 @@
 
 -(IBAction)SaveButtonPressed:(id)sender
 {
-    NSDictionary *DataDic = @{@"Name":_NameField.text,@"Number":_NumberFiled.text,@"Email":_EmailFiled.text,@"Birthday":_BirthdayFiled.text};
+    NSString *UserName = [NSString stringWithFormat:@"%@ %@",_FirstNameField.text,_LastNameField.text];
+    
+    NSDictionary *DataDic = @{@"Name":UserName,@"Number":_NumberFiled.text,@"Email":_EmailFiled.text,@"Birthday":_BirthdayFiled.text};
     
     BOOL isSucceed = [[ModelController shareModelController]SaveNewContext:DataDic];
     
@@ -91,16 +100,32 @@
             [FormatErrorView show];
             
             _EmailFiled.textColor = [UIColor redColor];
+        }else{
+            _EmailFiled.textColor = [UIColor blackColor];
         }
     }
     return YES;
 }
 
+-(void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    if (textField == _BirthdayFiled) {
+        [self MoveUpTheView];
+    }
+}
+
+-(void)textFieldDidEndEditing:(UITextField *)textField
+{
+    if (textField == _BirthdayFiled) {
+        [self MoveDownTheView];
+    }
+}
 
 #pragma mark -Touch Event
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    [_NameField resignFirstResponder];
+    [_FirstNameField resignFirstResponder];
+    [_LastNameField resignFirstResponder];
     [_NumberFiled resignFirstResponder];
     [_EmailFiled resignFirstResponder];
     [_BirthdayFiled resignFirstResponder];
@@ -116,10 +141,8 @@
         return YES;
     }
     
-    BOOL stricterFilter = YES;
     NSString *stricterfilterString = @"[A-Z0-9a-z\\._%+-]+@([A-Za-z0-9-]+\\.)+[A-Za-z]{2,4}";
-    NSString *laxString = @".+@([A-Za-z0-9-]+\\.+[A-Za-z]{2}[A-Za-z]*";
-    NSString *emailRegex = stricterFilter ? stricterfilterString : laxString ;
+    NSString *emailRegex = stricterfilterString;
     NSPredicate *emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",emailRegex];
     
     return [emailTest evaluateWithObject:checkString];
@@ -136,6 +159,9 @@
     _DatePicker.datePickerMode = UIDatePickerModeDate;
     [_DatePicker addTarget:self action:@selector(ChangeDateToTextField) forControlEvents:UIControlEventValueChanged];
     
+    NSDate *Todate = [NSDate date];
+    _DatePicker.maximumDate = Todate;
+    
     //Keyborad change DatePicker
     _BirthdayFiled.inputView = _DatePicker;
 }
@@ -146,5 +172,36 @@
     
     _BirthdayFiled.text = SelectDateStr;
 }
+
+#pragma mark - AnimationMoveMainView
+-(void)MoveUpTheView
+{
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:0.3];
+    [UIView setAnimationDelegate:self];
+    
+    [UIView setAnimationBeginsFromCurrentState:YES];
+    
+    self.view.frame = CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y - 30,
+                                 self.view.frame.size.width, self.view.frame.size.height);
+    
+    [UIView commitAnimations];
+    
+}
+
+-(void)MoveDownTheView
+{
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:0.3];
+    [UIView setAnimationDelegate:self];
+    
+    [UIView setAnimationBeginsFromCurrentState:YES];
+    
+    self.view.frame = CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y + 30,
+                                 self.view.frame.size.width, self.view.frame.size.height);
+    
+    [UIView commitAnimations];
+}
+
 
 @end
