@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>9A709B99-CD22-4475-921F-AB30BEAF6E80</string>
+	<key>IDESourceControlProjectName</key>
+	<string>CDPractice</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>FB24C306-951D-451A-8551-1BCA0EFCB381</key>
+		<string>https://github.com/AprilXMoon/Practice.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>CDPractice/CDPractice/CDPractice.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>FB24C306-951D-451A-8551-1BCA0EFCB381</key>
+		<string>../../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/AprilXMoon/Practice.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>FB24C306-951D-451A-8551-1BCA0EFCB381</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>FB24C306-951D-451A-8551-1BCA0EFCB381</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Practice</string>
+		</dict>
+	</array>
+</dict>
+</plist>
