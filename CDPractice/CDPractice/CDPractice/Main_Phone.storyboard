@@ -16,11 +16,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KFx-ym-77d">
-                                <rect key="frame" x="20" y="13" width="250" height="21"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2014-09-10 Wednesday" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KFx-ym-77d">
+                                <rect key="frame" x="20" y="12" width="191" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="250" id="AHL-Qe-iiz"/>
+                                    <constraint firstAttribute="width" constant="191" id="AHL-Qe-iiz"/>
                                     <constraint firstAttribute="height" constant="21" id="XwK-6e-hWG"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -59,9 +59,9 @@
                             <constraint firstItem="Rub-yA-Nbc" firstAttribute="top" secondItem="LYh-w2-JG9" secondAttribute="bottom" constant="6" id="Cz1-J1-S2C"/>
                             <constraint firstAttribute="trailing" secondItem="LYh-w2-JG9" secondAttribute="trailing" constant="20" symbolic="YES" id="Gjd-4Z-aFg"/>
                             <constraint firstItem="Rub-yA-Nbc" firstAttribute="leading" secondItem="i0s-hR-BHD" secondAttribute="leading" id="Nf5-t6-bMw"/>
-                            <constraint firstItem="LYh-w2-JG9" firstAttribute="top" secondItem="KFx-ym-77d" secondAttribute="top" id="kuk-GS-WJX"/>
+                            <constraint firstItem="LYh-w2-JG9" firstAttribute="top" secondItem="KFx-ym-77d" secondAttribute="top" constant="1" id="kuk-GS-WJX"/>
                             <constraint firstAttribute="trailing" secondItem="Rub-yA-Nbc" secondAttribute="trailing" id="pil-Hj-GDk"/>
-                            <constraint firstItem="LYh-w2-JG9" firstAttribute="leading" secondItem="KFx-ym-77d" secondAttribute="trailing" constant="8" symbolic="YES" id="xf6-uu-oBK"/>
+                            <constraint firstItem="LYh-w2-JG9" firstAttribute="leading" secondItem="KFx-ym-77d" secondAttribute="trailing" constant="67" id="xf6-uu-oBK"/>
                         </constraints>
                     </view>
                     <connections>

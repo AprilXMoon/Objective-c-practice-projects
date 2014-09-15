@@ -74,7 +74,7 @@
     NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
     NSDate *Date = [NSDate date];
     
-    [formatter setDateFormat:@"YYYY-MM-dd    EEEE"];
+    [formatter setDateFormat:@"YYYY-MM-dd EEEE"];
     
     TitleLabel.text = [formatter stringFromDate:Date];
 }
@@ -162,11 +162,6 @@
 -(UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return UITableViewCellEditingStyleDelete;
-}
-
--(NSString*)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return @"Delete";
 }
 
 #pragma mark - TableView delegate
