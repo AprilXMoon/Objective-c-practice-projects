@@ -1,7 +1,9 @@
 Practice
 ========
 
-Practice object.(iOS 7)
-
+Practice objects
+-------------
+CDPractice
 This is simple contact book.
 Only phone mode.
+--------------
