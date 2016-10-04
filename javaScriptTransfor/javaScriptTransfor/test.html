@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script>
+            
+        function callObjFunction()
+        {
+            var jsParam = "paramFromJs";
+            window.location  = 'js-call:runObjMethod:';
+        }
+        
+        function jsFunction(str)
+        {
+            alert("this is javascript alert! -> obj2 pass value to js show:"+ str);
+        }
+       </script>
+    </head>
+
+    <body>
+        <button onclick="callObjFunction()">call obj function</button>
+    </body>
+</html>
